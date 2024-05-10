@@ -6,8 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="fantastic-rpc" />
+        <module name="fantastic-rpc-easy" />
+        <module name="example-provider" />
+        <module name="example-common" />
+        <module name="example-consumer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="11" />
   </component>
 </project>
