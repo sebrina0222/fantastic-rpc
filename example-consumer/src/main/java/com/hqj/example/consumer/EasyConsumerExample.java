@@ -1,5 +1,7 @@
 package com.hqj.example.consumer;
 
+import com.hqj.easyrpc.proxy.ServiceProxy;
+import com.hqj.easyrpc.proxy.ServiceProxyFactory;
 import com.hqj.example.common.model.User;
 import com.hqj.example.common.service.UserService;
 
@@ -15,9 +17,9 @@ import com.hqj.example.common.service.UserService;
 public class EasyConsumerExample {
     public static void main(String[] args) {
         //TODO : 需要获得UserService的实现对象(RPC ?) 目前无法获取到
-        UserService userService = new UserServiceProxy();
+        UserService userService = ServiceProxyFactory.getProxy(UserService.class);
         User user = new User();
-        user.setName("Noora");
+        user.setName("Noora123");
         //调用
         User newUser = userService.getUser(user);
         if(newUser != null) {

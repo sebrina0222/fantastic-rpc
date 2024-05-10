@@ -19,6 +19,7 @@ import com.hqj.example.common.service.UserService;
 public class UserServiceImpl implements UserService {
     @Override
     public User getUser(User user) {
+        System.out.println("已使用RPC进行远程调用");
         System.out.println("用户名" + user.getName());
         return user;
     }

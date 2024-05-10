@@ -13,6 +13,7 @@
         <module>example-consumer</module>
         <module>example-provider</module>
         <module>fantastic-rpc-easy</module>
+        <module>fantastic-rpc-core</module>
     </modules>
 
     <properties>

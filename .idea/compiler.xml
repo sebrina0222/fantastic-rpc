@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="fantastic-rpc-easy" />
         <module name="example-provider" />
+        <module name="fantastic-rpc-core" />
         <module name="example-common" />
         <module name="example-consumer" />
       </profile>

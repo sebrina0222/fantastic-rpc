@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.hqj</groupId>
-            <artifactId>fantastic-rpc-easy</artifactId>
+            <artifactId>fantastic-rpc-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
