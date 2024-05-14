@@ -1,0 +1,2 @@
+jdk=com.hqj.easyrpc.serializer.JdkSerializer
+hessian=com.hqj.easyrpc.serializer.HessianSerializer

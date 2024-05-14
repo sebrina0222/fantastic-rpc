@@ -1,0 +1,2 @@
+json=com.hqj.easyrpc.serializer.JsonSerializer
+kryo=com.hqj.easyrpc.serializer.KryoSerializer

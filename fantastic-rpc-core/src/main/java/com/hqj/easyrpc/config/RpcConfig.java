@@ -10,6 +10,7 @@ package com.hqj.easyrpc.config;
  * @Version v1.0
  */
 
+import com.hqj.easyrpc.serializer.SerializerKeys;
 import lombok.Data;
 
 /**
@@ -36,7 +37,12 @@ public class RpcConfig {
     private Integer serverPort = 8080;
 
     /**
-     * 模拟调用
+     * 第三章：模拟调用
      */
     private boolean mock = false;
+
+    /**
+     * 第四章：序列化器
+     */
+    private String serializer = SerializerKeys.JDK;
 }

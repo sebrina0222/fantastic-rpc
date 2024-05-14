@@ -2,10 +2,12 @@ package com.hqj.easyrpc.proxy;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.hqj.easyrpc.RpcApplication;
 import com.hqj.easyrpc.model.RpcRequest;
 import com.hqj.easyrpc.model.RpcResponse;
 import com.hqj.easyrpc.serializer.JdkSerializer;
 import com.hqj.easyrpc.serializer.Serializer;
+import com.hqj.easyrpc.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -21,11 +23,11 @@ import java.lang.reflect.Method;
  * @Version v1.0
  */
 public class ServiceProxy implements InvocationHandler {
-
+    //指定序列化器
+    final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        //指定序列化器
-        Serializer serializer = new JdkSerializer();
+
 
         //构造请求
         RpcRequest rpcRequest = RpcRequest.builder()
