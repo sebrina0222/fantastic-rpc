@@ -18,10 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -36,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SpiLoader {
 
     /**
-     * 存储已加载的类：接口名 =>（key => 实现类）
+     * 存储已加载的类：接口名 =>（key => 实现类） Serializer -> (key(jdk,hessian...) -> 实现类(JdkSerizlizer))
      */
     private static final Map<String, Map<String, Class<?>>> loaderMap = new ConcurrentHashMap<>();
 
@@ -66,7 +63,7 @@ public class SpiLoader {
     private static final List<Class<?>> LOAD_CLASS_LIST = Arrays.asList(Serializer.class);
 
     /**
-     * 加载所有类型
+     * 加载所有接口类型，但现在只有Serializer.class一个 因此loadAll和load(Serializer.class) 没有区别
      */
     public static void loadAll() {
         log.info("加载所有 SPI");
@@ -85,7 +82,7 @@ public class SpiLoader {
      */
     public static <T> T getInstance(Class<?> tClass, String key) {
         String tClassName = tClass.getName();
-        Map<String, Class<?>> keyClassMap = loaderMap.get(tClassName);
+        Map<String, Class<?>> keyClassMap = loaderMap.get(tClassName); //获得Serializer的实现类map
         if (keyClassMap == null) {
             throw new RuntimeException(String.format("SpiLoader 未加载 %s 类型", tClassName));
         }
@@ -98,7 +95,7 @@ public class SpiLoader {
         String implClassName = implClass.getName();
         if (!instanceCache.containsKey(implClassName)) {
             try {
-                instanceCache.put(implClassName, implClass.newInstance());
+                instanceCache.put(implClassName, implClass.newInstance()); //懒加载？ 如果实例缓存中没有 创建一个并返回
             } catch (InstantiationException | IllegalAccessException e) {
                 String errorMsg = String.format("%s 类实例化失败", implClassName);
                 throw new RuntimeException(errorMsg, e);
@@ -126,11 +123,11 @@ public class SpiLoader {
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
-                        String[] strArray = line.split("=");
+                        String[] strArray = line.split("="); //例子 ： jdk=com.hqj.easyrpc.serializer.JdkSerializer 对这句话进行左右拆分
                         if (strArray.length > 1) {
                             String key = strArray[0];
                             String className = strArray[1];
-                            keyClassMap.put(key, Class.forName(className));
+                            keyClassMap.put(key, Class.forName(className)); //实现类的map 也就是loaderMap的value
                         }
                     }
                 } catch (Exception e) {
@@ -138,15 +135,22 @@ public class SpiLoader {
                 }
             }
         }
-        loaderMap.put(loadClass.getName(), keyClassMap);
+        loaderMap.put(loadClass.getName(), keyClassMap); //对于一个接口 比如 Serizlizer 已经扫描完配置文件中设置的实现类
         return keyClassMap;
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        loadAll();
-        System.out.println(loaderMap);
-        Serializer serializer = getInstance(Serializer.class, "jdk");
-        System.out.println(serializer);
+//        loadAll();
+//        System.out.println(loaderMap);
+//        Serializer serializer = getInstance(Serializer.class, "jdk");
+//        System.out.println(serializer);
+        /**
+         * 测试ServiceLoader
+         */
+        Serializer serializer = null;
+        ServiceLoader<Serializer> serializers = ServiceLoader.load(Serializer.class);
+        for(Serializer serializer1 : serializers) {
+            System.out.println("serializer1 = " + serializer1);
+        }
     }
-
 }
