@@ -1,5 +1,6 @@
 package com.hqj.easyrpc.model;
 
+import com.hqj.easyrpc.constant.RpcConstant;
 import com.hqj.easyrpc.serializer.Serializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,10 @@ public class RpcRequest implements Serializable {
      * 方法名称
      */
     private String methodName;
+    /**
+     * 第五章 服务版本
+     */
+    private String serviceVersion = RpcConstant.DEFAULT_SERVICE_VERSION;
     /**
      * 参数类型列表
      */

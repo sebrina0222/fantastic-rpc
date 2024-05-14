@@ -1,7 +1,10 @@
 package com.hqj.easyrpc;
 
+import com.hqj.easyrpc.config.RegistryConfig;
 import com.hqj.easyrpc.config.RpcConfig;
 import com.hqj.easyrpc.constant.RpcConstant;
+import com.hqj.easyrpc.registry.Registry;
+import com.hqj.easyrpc.registry.RegistryFactory;
 import com.hqj.easyrpc.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +32,11 @@ public class RpcApplication {
     public static void init(RpcConfig newRpcConfig) {
         rpcConfig = newRpcConfig;
         log.info("rpc init, config = {}", newRpcConfig.toString());
+        //5.注册中心初始化
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init, config = {}", registryConfig);
     }
 
 
