@@ -48,7 +48,6 @@ public class ServiceProxy implements InvocationHandler {
             //序列化
             byte[] bodyBytes = serializer.serialize(rpcRequest);
             byte[] result;
-            //TODO: 这里地址被硬编码了 需要使用注册中心和服务发现机制解决
             //从注册中心获取服务提供者请求地址
             RpcConfig rpcConfig = RpcApplication.getRpcConfig();
             Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());

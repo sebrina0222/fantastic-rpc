@@ -13,7 +13,9 @@ package com.hqj.easyrpc.registry;
 import com.hqj.easyrpc.config.RegistryConfig;
 import com.hqj.easyrpc.model.ServiceMetaInfo;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 为什么实现Registry接口？为什么是接口
@@ -51,4 +53,17 @@ public interface Registry {
      * 服务销毁
      */
     void destroy();
+
+
+    /**
+     * 6.心跳检测（服务端）
+     */
+    void heartBeat();
+
+    /**
+     * 监听(消费端)
+     * @param serviceNodeKey
+     */
+    void watch(String serviceNodeKey);
+
 }
