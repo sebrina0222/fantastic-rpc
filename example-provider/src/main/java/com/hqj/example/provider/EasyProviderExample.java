@@ -19,6 +19,7 @@ import com.hqj.easyrpc.registry.Registry;
 import com.hqj.easyrpc.registry.RegistryFactory;
 import com.hqj.easyrpc.server.HttpServer;
 import com.hqj.easyrpc.server.VertxHttpServer;
+import com.hqj.easyrpc.server.tcp.VertxTcpServer;
 import com.hqj.example.common.service.UserService;
 
 /**
@@ -41,12 +42,16 @@ public class EasyProviderExample {
         serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
         serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
         try{
+            //记得开启注册中心
             registry.register(serviceMetaInfo);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
-        //提供服务
-        HttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+//        //提供Http服务
+//        HttpServer httpServer = new VertxHttpServer();
+//        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        //启动TCP服务
+        VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(8081);
     }
 }
