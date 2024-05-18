@@ -1,0 +1,3 @@
+roundRobin=com.hqj.easyrpc.loadbalancer.RoundRobinLoadBalancer
+random=com.hqj.easyrpc.loadbalancer.RandomLoadBalancer
+consistentHash=com.hqj.easyrpc.loadbalancer.ConsistentHashLoadBalancer

@@ -41,9 +41,21 @@ public class EasyProviderExample {
         serviceMetaInfo.setServiceName(serviceName);
         serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
         serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
+
+        ServiceMetaInfo serviceMetaInfo1 = new ServiceMetaInfo();
+        serviceMetaInfo1.setServiceName(serviceName);
+        serviceMetaInfo1.setServiceHost(rpcConfig.getServerHost());
+        serviceMetaInfo1.setServicePort(9090);
+
+        ServiceMetaInfo serviceMetaInfo2 = new ServiceMetaInfo();
+        serviceMetaInfo2.setServiceName(serviceName);
+        serviceMetaInfo2.setServiceHost(rpcConfig.getServerHost());
+        serviceMetaInfo2.setServicePort(9091);
         try{
             //记得开启注册中心
             registry.register(serviceMetaInfo);
+            registry.register(serviceMetaInfo1);
+            registry.register(serviceMetaInfo2);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -52,6 +64,8 @@ public class EasyProviderExample {
 //        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
         //启动TCP服务
         VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(9090);
+        vertxTcpServer.doStart(9091);
         vertxTcpServer.doStart(8081);
     }
 }

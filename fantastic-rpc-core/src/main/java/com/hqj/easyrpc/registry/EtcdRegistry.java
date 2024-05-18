@@ -79,7 +79,7 @@ public class EtcdRegistry implements Registry {
         // 将键值对与租约关联起来，并设置过期时间
         PutOption putOption = PutOption.builder().withLeaseId(leaseId).build();
         kvClient.put(key, value, putOption).get();
-        Log.info("==============>成功register到注册中心：{}",key.toString());
+        Log.info("EtcdRegistry:==============>成功register到注册中心：{}",key.toString());
         // 添加节点信息到本地缓存
         localRegisterNodeKeySet.add(registerKey);
     }
@@ -97,7 +97,7 @@ public class EtcdRegistry implements Registry {
         // 6. 优先从缓存获取服务
         List<ServiceMetaInfo> cachedServiceMetaInfoList = registryServiceCache.readCache();
         if (cachedServiceMetaInfoList != null) {
-            Log.info("=============> 在缓存中找到了服务");
+            Log.info("EtcdRegistry:=============> 在缓存中找到了服务");
             return cachedServiceMetaInfoList;
         }
 
@@ -123,7 +123,7 @@ public class EtcdRegistry implements Registry {
                     })
                     .collect(Collectors.toList());
             // 写入服务缓存
-            Log.info("============> {} 服务写入缓存中",serviceMetaInfoList.toString());
+            Log.info("EtcdRegistry:============> {} 服务写入缓存中",serviceMetaInfoList.toString());
             registryServiceCache.writeCache(serviceMetaInfoList);
             return serviceMetaInfoList;
         } catch (Exception e) {

@@ -4,9 +4,12 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.esotericsoftware.minlog.Log;
 import com.hqj.easyrpc.RpcApplication;
 import com.hqj.easyrpc.config.RpcConfig;
 import com.hqj.easyrpc.constant.RpcConstant;
+import com.hqj.easyrpc.loadbalancer.LoadBalancer;
+import com.hqj.easyrpc.loadbalancer.LoadBalancerFactory;
 import com.hqj.easyrpc.model.RpcRequest;
 import com.hqj.easyrpc.model.RpcResponse;
 import com.hqj.easyrpc.model.ServiceMetaInfo;
@@ -25,7 +28,9 @@ import io.vertx.core.net.NetSocket;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -66,7 +71,13 @@ public class ServiceProxy implements InvocationHandler {
             if (CollUtil.isEmpty(serviceMetaInfoList)) {
                 throw new RuntimeException("暂无服务地址");
             }//暂时先取第一个
-            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
+            //负载均衡
+            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(rpcConfig.getLoadBalancer());
+            // 将调用方法名（请求路径） 作为负载均衡参数
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("methodName", rpcRequest.getMethodName());
+            ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
+            Log.info("ServiceProxy:服务选择的地址为======================>" + selectedServiceMetaInfo.getServicePort());
             //发送TCP请求
             RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
             return rpcResponse.getData();
