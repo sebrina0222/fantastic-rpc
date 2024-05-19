@@ -10,6 +10,7 @@ package com.hqj.easyrpc.config;
  * @Version v1.0
  */
 
+import com.hqj.easyrpc.fault.retry.RetryStrategyKeys;
 import com.hqj.easyrpc.loadbalancer.LoadBalancerKeys;
 import com.hqj.easyrpc.serializer.SerializerKeys;
 import lombok.Data;
@@ -56,4 +57,9 @@ public class RpcConfig {
      * 负载均衡器
      */
     private String loadBalancer = LoadBalancerKeys.RANDOM;
+
+    /**
+     * 重试策略
+     */
+    private String retryStrategy = RetryStrategyKeys.NO;
 }

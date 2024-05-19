@@ -8,6 +8,8 @@ import com.esotericsoftware.minlog.Log;
 import com.hqj.easyrpc.RpcApplication;
 import com.hqj.easyrpc.config.RpcConfig;
 import com.hqj.easyrpc.constant.RpcConstant;
+import com.hqj.easyrpc.fault.retry.RetryStrategy;
+import com.hqj.easyrpc.fault.retry.RetryStrategyFactory;
 import com.hqj.easyrpc.loadbalancer.LoadBalancer;
 import com.hqj.easyrpc.loadbalancer.LoadBalancerFactory;
 import com.hqj.easyrpc.model.RpcRequest;
@@ -79,7 +81,10 @@ public class ServiceProxy implements InvocationHandler {
             ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
             Log.info("ServiceProxy:服务选择的地址为======================>" + selectedServiceMetaInfo.getServicePort());
             //发送TCP请求
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+//            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
+                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo));
             return rpcResponse.getData();
 //            Vertx vertx = Vertx.vertx();
 //            NetClient netClient = vertx.createNetClient();

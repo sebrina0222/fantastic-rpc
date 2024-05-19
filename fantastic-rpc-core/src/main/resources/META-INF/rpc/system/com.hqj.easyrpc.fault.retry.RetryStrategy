@@ -1,0 +1,2 @@
+no=com.hqj.easyrpc.fault.retry.NoRetryStrategy
+fixedInterval=com.hqj.easyrpc.fault.retry.FixedIntervalRetryStrategy
