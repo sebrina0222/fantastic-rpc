@@ -11,9 +11,11 @@ package com.hqj.example.provider;
  */
 
 import com.hqj.easyrpc.RpcApplication;
+import com.hqj.easyrpc.bootstrap.ProviderBootstrap;
 import com.hqj.easyrpc.config.RegistryConfig;
 import com.hqj.easyrpc.config.RpcConfig;
 import com.hqj.easyrpc.model.ServiceMetaInfo;
+import com.hqj.easyrpc.model.ServiceRegisterInfo;
 import com.hqj.easyrpc.registry.LocalRegistry;
 import com.hqj.easyrpc.registry.Registry;
 import com.hqj.easyrpc.registry.RegistryFactory;
@@ -21,6 +23,9 @@ import com.hqj.easyrpc.server.HttpServer;
 import com.hqj.easyrpc.server.VertxHttpServer;
 import com.hqj.easyrpc.server.tcp.VertxTcpServer;
 import com.hqj.example.common.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 简易服务提供者示例
@@ -64,4 +69,6 @@ public class EasyProviderExample {
         VertxTcpServer vertxTcpServer = new VertxTcpServer();
         vertxTcpServer.doStart(8081);
     }
+
+
 }

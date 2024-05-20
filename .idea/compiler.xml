@@ -7,12 +7,20 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="fantastic-rpc-easy" />
+        <module name="example-springboot-provider" />
+        <module name="example-springboot-consumer" />
         <module name="example-provider" />
         <module name="fantastic-rpc-core" />
         <module name="example-common" />
+        <module name="fantastic-rpc-spring-boot-starter" />
         <module name="example-consumer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="fantastic-rpc-spring-boot-starter" options="" />
+    </option>
   </component>
 </project>

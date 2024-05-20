@@ -1,6 +1,7 @@
 package com.hqj.example.consumer;
 
 import com.hqj.easyrpc.RpcApplication;
+import com.hqj.easyrpc.bootstrap.ConsumerBootstrap;
 import com.hqj.easyrpc.config.RpcConfig;
 import com.hqj.easyrpc.constant.RpcConstant;
 import com.hqj.easyrpc.proxy.ServiceProxyFactory;
@@ -21,8 +22,7 @@ public class ConsumerExample {
 
     public static void main(String[] args) {
         //pcConfig rpc = ConfigUtils.loadConfig(RpcConfig.class, "rpc");
-        RpcConfig rpc = RpcApplication.getRpcConfig();
-        System.out.println("rpc = " + rpc);
+        ConsumerBootstrap.init();
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
         User user = new User();
         user.setName("Noora123");
