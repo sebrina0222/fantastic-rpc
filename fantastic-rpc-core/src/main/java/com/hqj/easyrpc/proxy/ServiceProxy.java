@@ -10,6 +10,8 @@ import com.hqj.easyrpc.config.RpcConfig;
 import com.hqj.easyrpc.constant.RpcConstant;
 import com.hqj.easyrpc.fault.retry.RetryStrategy;
 import com.hqj.easyrpc.fault.retry.RetryStrategyFactory;
+import com.hqj.easyrpc.fault.tolerant.TolerantStrategy;
+import com.hqj.easyrpc.fault.tolerant.TolerantStrategyFactory;
 import com.hqj.easyrpc.loadbalancer.LoadBalancer;
 import com.hqj.easyrpc.loadbalancer.LoadBalancerFactory;
 import com.hqj.easyrpc.model.RpcRequest;
@@ -80,11 +82,18 @@ public class ServiceProxy implements InvocationHandler {
             requestParams.put("methodName", rpcRequest.getMethodName());
             ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
             Log.info("ServiceProxy:服务选择的地址为======================>" + selectedServiceMetaInfo.getServicePort());
+            RpcResponse rpcResponse = null;
             //发送TCP请求
-            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+            try {
+                RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
 //            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
-            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
-                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo));
+                rpcResponse = retryStrategy.doRetry(() ->
+                        VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo));
+            } catch (Exception e) {
+                //容错机制
+                TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
+                tolerantStrategy.doTolerant(null, e);
+            }
             return rpcResponse.getData();
 //            Vertx vertx = Vertx.vertx();
 //            NetClient netClient = vertx.createNetClient();

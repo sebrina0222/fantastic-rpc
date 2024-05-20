@@ -11,6 +11,7 @@ package com.hqj.easyrpc.config;
  */
 
 import com.hqj.easyrpc.fault.retry.RetryStrategyKeys;
+import com.hqj.easyrpc.fault.tolerant.TolerantStrategyKeys;
 import com.hqj.easyrpc.loadbalancer.LoadBalancerKeys;
 import com.hqj.easyrpc.serializer.SerializerKeys;
 import lombok.Data;
@@ -62,4 +63,9 @@ public class RpcConfig {
      * 重试策略
      */
     private String retryStrategy = RetryStrategyKeys.NO;
+
+    /**
+     * 容错策略
+     */
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
 }
